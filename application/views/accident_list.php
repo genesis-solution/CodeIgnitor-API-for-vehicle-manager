@@ -37,7 +37,8 @@
                                     <th>Vehicle id</th>
                                     <th>Accident time</th>                                    
                                     <th>Accident driver name</th>
-                                    <th>Accident Date</th>                                    
+                                    <th>Accident Date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
 
@@ -48,7 +49,29 @@
                                     <tr>                                       
 
                                         <td>
-                                            <?php  echo $v['accident_id']; ?>
+                                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#galleryModal<?php  echo $v['accident_id']; ?>"><?php  echo $v['accident_id']; ?></button>
+
+                                            <div class="modal fade" id="galleryModal<?php  echo $v['accident_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="galleryModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="galleryModalLabel">Accident by <?php  echo $v['accident_driver_name']; ?></h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <?php foreach ($v['accident_images'] as $image): ?>
+                                                                    <div style="padding: 10px;display: inline-block">
+                                                                        <img src="<?php echo base_url('images/uploads/accident/'.$image['file_name']); ?>" style="width: 200px; object-fit: cover;height: 150px; max-height: 250px" class="img-fluid" alt="<?php echo $image['file_name']; ?>">
+                                                                    </div>
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>  
 
                                         <td>
@@ -65,7 +88,11 @@
 
                                         <td>
                                             <?php  echo $v['accident_date']; ?>
-                                        </td>                                          
+                                        </td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#galleryModal<?php  echo $v['accident_id']; ?>">View</button>
+                                        </td>
                                     </tr>
 
                                     <?php } ?>

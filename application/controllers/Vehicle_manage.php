@@ -36,8 +36,30 @@ class Vehicle_manage extends CI_Controller {
 
 	public function accident_details($vehicle_id){
 
-		$info['vehicle'] = $this->m_admin->db_select("accident_id,vehicle_id,accident_date,accident_time,accident_driver_name,accident_amount,accident_km_reading", "accident_detail",array('vehicle_id'=>$vehicle_id),'', '', '', '', 'all');
+		//$info['vehicle'] = $this->m_admin->db_select("accident_id,vehicle_id,accident_date,accident_time,accident_driver_name,accident_amount,accident_km_reading", "accident_detail",array('vehicle_id'=>$vehicle_id),'', '', '', '', 'all');
+        $info = $this->m_admin->db_select("*", "accident_detail", array('vehicle_id'=>$vehicle_id) ,'', '', '', '', 'all');
+        $data_array = array();
+        $i = 0;
+        foreach($info as $ins => $inf){
+            $data_array[$i]['accident_id'] = $inf['accident_id'];
+            $data_array[$i]['vehicle_id'] = $inf['vehicle_id'];
+            $data_array[$i]['accident_date'] = $inf['accident_date'];
+            $data_array[$i]['accident_time'] = $inf['accident_time'];
 
+            $data_array[$i]['accident_driver_name'] = $inf['accident_driver_name'];
+            $data_array[$i]['accident_amount'] = $inf['accident_amount'];
+            $data_array[$i]['accident_km_reading'] = $inf['accident_km_reading'];
+            $data_array[$i]['accident_description'] = $inf['accident_description'];
+            $data_array[$i]['date_create'] = $inf['date_create'];
+
+            $wr1=array('vehicle_id'=>$inf['vehicle_id'], 'category_id' => $inf['accident_id'], 'category_type' => 'accident');
+            $file_names = $this->m_admin->db_select("file_name", "upload_images", $wr1 ,'', '', '', '', 'all');
+
+            $data_array[$i]['accident_images'] = $file_names;
+
+            $i++;
+        }
+        $info['vehicle'] = $data_array;
 		$this->load->view('header');
 		$this->load->view('sidebar');
 		$this->load->view('accident_list',$info);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2023 at 11:20 AM
+-- Generation Time: May 26, 2023 at 02:58 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.17
 
@@ -45,7 +45,10 @@ CREATE TABLE `accident_detail` (
 
 INSERT INTO `accident_detail` (`accident_id`, `vehicle_id`, `accident_date`, `accident_time`, `accident_driver_name`, `accident_amount`, `accident_km_reading`, `accident_description`, `date_create`) VALUES
 (1, 1, '2023-05-21 00:00:00', '08:10:00', 's', 32.00, 3.00, '23', '2023-05-22 20:25:58'),
-(2, 1, '2023-05-17 00:00:00', '08:27:00', 'Liew', 3.00, 2.00, '3', '2023-05-22 20:28:04');
+(2, 1, '2023-05-17 00:00:00', '08:27:00', 'Liew', 3.00, 2.00, '3', '2023-05-22 20:28:04'),
+(3, 1, '2023-05-24 00:00:00', '04:43:00', '2', 23.00, 23.00, '23', '2023-05-25 16:44:18'),
+(4, 1, '2023-05-24 00:00:00', '04:46:00', 'no image', 34.00, 342.00, '12', '2023-05-25 16:47:23'),
+(5, 1, '2023-05-24 00:00:00', '05:26:00', '23', 23.00, 23.00, '23', '2023-05-25 17:26:58');
 
 -- --------------------------------------------------------
 
@@ -217,7 +220,9 @@ INSERT INTO `upload_images` (`id`, `vehicle_id`, `category_id`, `category_type`,
 (2, 1, 1, 'accident', '646c2eca2edfd.JPG'),
 (3, 1, 1, 'accident', '646c32a0b5634.JPG'),
 (4, 1, 2, 'accident', '646c32bf97e5e.JPG'),
-(5, 1, 2, 'accident', '646c32c298ac7.JPG');
+(5, 1, 2, 'accident', '646c32c298ac7.JPG'),
+(6, 1, 3, 'accident', '646ff2d04717c.JPG'),
+(7, 1, 5, 'accident', '646ffcd0ea914.JPG');
 
 -- --------------------------------------------------------
 
@@ -332,7 +337,7 @@ ALTER TABLE `vehicle_master`
 -- AUTO_INCREMENT for table `accident_detail`
 --
 ALTER TABLE `accident_detail`
-  MODIFY `accident_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `accident_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `expense_detail`
@@ -380,7 +385,7 @@ ALTER TABLE `tbl_admin`
 -- AUTO_INCREMENT for table `upload_images`
 --
 ALTER TABLE `upload_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `vehicle_master`
