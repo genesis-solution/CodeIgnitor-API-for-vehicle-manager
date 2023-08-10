@@ -316,11 +316,6 @@ class Vehicle_api extends CI_Controller {
                     'accident_driver_name' => $accident_driver_name
                 );
 
-                 $fp = fopen('../test.txt',"wb");
-                 $h = fopen('../test.txt', 'r+');
-                fwrite($fp, json_encode($arr_names)); // json_encode()
-                fclose($fp);
-
                 foreach ($arr_names as $file=>$item)
                 {
                     $filequery = array(
@@ -373,6 +368,61 @@ class Vehicle_api extends CI_Controller {
 			$this->_sendResponse($status_code); 
 		}
 	}
+
+    public function set_member_api(){
+ $fp = fopen('../test.txt',"wb");
+         $h = fopen('../test.txt', 'r+');
+         fwrite($fp, json_encode($_POST));
+         fclose($fp);
+        $action_type = $this->is_require($_POST, 'action_type');
+        $member_id = $_POST['member_id'];
+        $member_name = $this->is_require($_POST, 'member_name');
+        $member_email = $this->is_require($_POST, 'member_email');
+        $member_phone_number = $this->is_require($_POST, 'member_phone_number');
+        $member_department = $this->is_require($_POST, 'member_department');
+        $member_role = $this->is_require($_POST, 'member_role');
+        $member_address = $this->is_require($_POST, 'member_address');
+        $member_image = $this->is_require($_POST, 'member_image');
+
+        $ins = array(
+            'member_name' => $member_name,
+            'member_email' => $member_email,
+            'member_phone_number' => $member_phone_number,
+            'member_department' => $member_department,
+            'member_role' => $member_role,
+            'member_address' => $member_address,
+            'member_image' => $member_image
+        );
+
+        if($action_type=='new'){
+
+            $temp = $this->m_admin->insert_entry('members',$ins,TRUE);
+            $status_code="";
+            if($temp){
+                $status_code=200;
+            }else{
+                $status_code=400;
+            }
+
+            $this->_sendResponse($status_code);
+        }
+
+        if($action_type=='update'){
+
+            $member_id = $this->is_require($_POST, 'member_id');
+            $wr=array('member_id'=>$member_id);
+
+            $temp = $this->db->update('members',$ins,$wr);
+
+            $status_code="";
+            if($temp){
+                $status_code = 200;
+            }else{
+                $status_code=400;
+            }
+            $this->_sendResponse($status_code);
+        }
+    }
 
 	public function set_expense_api(){
 
@@ -1012,6 +1062,12 @@ class Vehicle_api extends CI_Controller {
 		$this->_sendResponse(200);
 	}
 
+    function get_member_master(){
+        $info = $this->m_admin->select_custom("select * from members");
+        $this->result['member_details'] = $info;
+        $this->_sendResponse(200);
+    }
+
 
 
 	function get_vehicle_master1(){		
@@ -1098,10 +1154,6 @@ class Vehicle_api extends CI_Controller {
 	}
 
 	function upload_vehicle() {
-			// $fp = fopen('../test.txt',"wb");
-			// $h = fopen('../test.txt', 'r+'); 
-			// fwrite($fp, $this->is_require($_POST, 'pic'));
-			// fclose($fp);
 		$place = $this->is_require($_POST, 'place');
 		
 		
@@ -1125,6 +1177,34 @@ class Vehicle_api extends CI_Controller {
 			$this->_sendResponse(500);
 		}
 	}
+
+    function upload_avatar() {
+        // $fp = fopen('../test.txt',"wb");
+        // $h = fopen('../test.txt', 'r+');
+        // fwrite($fp, $this->is_require($_POST, 'pic'));
+        // fclose($fp);
+        $place = $this->is_require($_POST, 'place');
+
+        $decoded=base64_decode($this->is_require($_POST, 'pic'));
+
+        $directory = './images/uploads/';
+
+        if ($place == 'accident') {
+            $directory = $directory . "users/";
+        }
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        $file_name = uniqid() . '.JPG';
+        $file_path = $directory . $file_name;
+
+        if (file_put_contents($file_path, $decoded)) {
+            $this->result['filename'] = $file_name;
+            $this->_sendResponse(200);
+        } else {
+            $this->_sendResponse(500);
+        }
+    }
 
 
 	function get_expense_api(){
@@ -1434,7 +1514,16 @@ $return_string="";
 			'puc_issue_date'=>'Puc issue date is Required',
 			'puc_expiry_date'=>'Puc expriy date is Required',
 			'puc_amount'=>'Puc amount is Required',
-			'puc_description'=>'Puc description is Required',			
+			'puc_description'=>'Puc description is Required',
+
+            'member_id'=>'ID is Required',
+            'member_name'=>'Name is Required',
+            'member_email'=>'Email is Required',
+            'member_phone_number'=>'Phone number is Required',
+            'member_role'=>'Role is Required',
+            'member_address'=>'Address is Required',
+            'member_image'=>'Avatar image is Required',
+            'member_department'=>'Department is Required',
 
 		);
 		
